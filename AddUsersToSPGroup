@@ -1,0 +1,29 @@
+Add-PSSnapin Microsoft.SharePoint.PowerShell
+  
+#Read CSV file
+$CSVData = Import-CSV -path "C:\UserList.csv"
+
+#Set 
+$WebUrl = "http://sitecollection/sites/PM"
+$GroupName = "PM Members"
+
+#Get the Web
+$web=Get-SPWeb $WebUrl
+#Get the SharePoint Group
+$Group= $web.Groups[$GroupName]
+
+#Loop every Row in the CSV
+foreach ($Row in $CSVData)
+{
+    #Get UserName
+    $userName = $row.UserName
+
+    #Add User to the site collection
+    $user = $web.EnsureUser($UserName)
+ 
+    #Add User to the Group
+    $group.AddUser($user)
+
+    Write-Host "Added User: " $row.UserName -ForegroundColor Green
+
+}
